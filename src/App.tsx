@@ -1,9 +1,11 @@
-import styles from "App.module.scss";
+import { FC } from "react";
+import styles from "./App.module.scss";
+import SearchMovies from "components/SearchMovies/SearchMovies";
 
-const App = () => {
+const App: FC = () => {
 	return (
 		<div className={styles.App}>
-			<div>Hello, World!</div>
+			<SearchMovies />
 		</div>
 	);
 };

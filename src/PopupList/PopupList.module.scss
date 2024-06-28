@@ -1,0 +1,10 @@
+.details {
+  display: block;
+  text-align: left;
+  
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    // margin-bottom: 5px;
+  }
+}

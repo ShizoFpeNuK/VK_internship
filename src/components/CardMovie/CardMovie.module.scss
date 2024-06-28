@@ -1,0 +1,48 @@
+.card {
+  display: flex;
+  column-gap: 10px;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: solid 1px black;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .id {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    min-width: 24px;
+
+    > span {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 22px;
+    } 
+  }
+
+  .poster {
+    height: 100px;
+    width: 100px;
+  }
+
+  .info {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+
+    .title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .year {
+    }
+
+    .rating {
+    }
+  }
+}

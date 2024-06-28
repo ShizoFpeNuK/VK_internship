@@ -1,0 +1,19 @@
+.inputRange {
+  display: flex;
+  column-gap: 5px;
+
+  input {
+    width: 100%;
+
+    &[type="number"]::-webkit-outer-spin-button,
+    &[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Скрытие стрелок в Firefox */
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+}
