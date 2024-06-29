@@ -1,8 +1,9 @@
+import { observer } from "mobx-react-lite";
 import { CSSProperties, FC, FormEventHandler, useState } from "react";
 import styles from "./FiltersMovie.module.scss";
-import InputRange from "components/form/InputRange/InputRange";
-import PopupList from "PopupList/PopupList";
-import Select from "components/form/Select/Select";
+import InputRange from "components/formItems/InputRange/InputRange";
+import PopupList from "components/popups/PopupList/PopupList";
+import Select from "components/formItems/Select/Select";
 
 interface FiltersMovieProps {
 	style?: CSSProperties;
@@ -10,7 +11,7 @@ interface FiltersMovieProps {
 
 const genres = ["Комедия", "Драма", "Экшен", "Фантастика"];
 
-const FiltersMovie: FC<FiltersMovieProps> = ({ style }) => {
+const FiltersMovie: FC<FiltersMovieProps> = observer(({ style }) => {
 	const [selected, setSelected] = useState<string[]>([]);
 
 	const handleSubmit: FormEventHandler<HTMLButtonElement> = (e) => {
@@ -44,6 +45,6 @@ const FiltersMovie: FC<FiltersMovieProps> = ({ style }) => {
 			<button onSubmit={handleSubmit}>Поиск</button>
 		</form>
 	);
-};
+});
 
 export default FiltersMovie;

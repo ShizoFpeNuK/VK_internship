@@ -6,7 +6,7 @@ import ListCardMovie from "components/ListCardMovie/ListCardMovie";
 const SearchMovies: FC = () => {
 	return (
 		<section className={styles.searchMovies}>
-			<FiltersMovie style={{width: "30%"}}/>
+			<FiltersMovie style={{ width: "30%" }} />
 			<ListCardMovie />
 		</section>
 	);
