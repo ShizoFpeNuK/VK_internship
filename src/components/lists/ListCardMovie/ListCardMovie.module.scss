@@ -1,0 +1,9 @@
+.listCards {
+  width: 100%;
+
+  .container {
+    &:has(+ div) {
+      margin-bottom: 10px;
+    }
+  }
+}

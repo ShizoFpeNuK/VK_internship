@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { useStores } from "hooks/rootStoreContext";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useCallback, useEffect, useState } from "react";
 import styles from "./ListCardMovie.module.scss";
-import CardMovie from "components/CardMovie/CardMovie";
+import CardMovie from "components/cards/CardMovie/CardMovie";
 import Pagination from "components/Pagination/Pagination";
+import { useNavigate } from "react-router-dom";
 
 const getTotalPageCount = (countElements: number, count: number): number => {
 	return Math.ceil(countElements / count);
@@ -18,6 +19,19 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 		rootMoviesStore: { movies, isLoading, isAppliedFilters, getMovies, setIsAppliedFilters },
 	} = useStores();
 	const [page, setPage] = useState(1);
+	const navigate = useNavigate();
+
+	const onClickCardMovie: MouseEventHandler<HTMLElement> = ({ target }) => {
+		const element = target as HTMLElement;
+
+		if (
+			element.getAttribute("data-btn-details") &&
+			element.parentElement?.hasAttribute("data-key")
+		) {
+			const movieId = element.parentElement?.getAttribute("data-key");
+			navigate(`/movies/${movieId}`);
+		}
+	};
 
 	const handleNextPageClick = useCallback(() => {
 		const current = page;
@@ -46,31 +60,29 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 	}, [isAppliedFilters, setIsAppliedFilters]);
 
 	return (
-		<div className={styles.listCards}>
-			{isLoading ? (
-				<p>Loading...</p>
-			) : movies?.docs ? (
-				movies.docs.map((movie, i) => (
-					<CardMovie
-						id={i + 1 + (page - 1) * countPerPage}
-						key={movie.id}
-						year={movie.year}
-						poster={movie.poster?.url ?? "poster.avif"}
-						rating={movie.rating.kp}
-						name={
-							movie.name
-								? movie.name
-								: movie.alternativeName
-								? movie.alternativeName
-								: movie.enName
-								? movie.enName
-								: "Название отсутствует"
-						}
-					/>
-				))
-			) : (
-				<p>NO DATA</p>
-			)}
+		<section className={styles.listCards}>
+			<div
+				className={styles.container}
+				onClick={onClickCardMovie}
+			>
+				{isLoading ? (
+					<p>Loading...</p>
+				) : movies?.docs ? (
+					movies.docs.map((movie, i) => (
+						<CardMovie
+							numberInList={i + 1 + (page - 1) * countPerPage}
+							id={movie.id}
+							key={movie.id}
+							year={movie.year}
+							poster={movie.poster?.url ?? "poster.avif"}
+							rating={movie.rating.kp}
+							name={movie.name ?? movie.enName ?? movie.alternativeName ?? "Название отсутствует"}
+						/>
+					))
+				) : (
+					<p>NO DATA</p>
+				)}
+			</div>
 
 			{!!movies && (
 				<Pagination
@@ -83,7 +95,7 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 					nav={{ current: page, total: getTotalPageCount(movies.total, countPerPage) }}
 				/>
 			)}
-		</div>
+		</section>
 	);
 });
 

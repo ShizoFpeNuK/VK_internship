@@ -1,4 +1,4 @@
-import { TypeMultipleSelect } from "components/types/formItems";
+import { TypeMultipleSelect } from "types/formItems";
 import { FC, MouseEventHandler, useEffect, useState } from "react";
 import styles from "./MultipleSelect.module.scss";
 

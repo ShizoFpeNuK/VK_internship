@@ -1,9 +1,9 @@
-import { IMovie, IMovieFilters } from "models/movie.model";
+import { IMovies, IMovieFilters } from "models/movie.model";
 import { makeAutoObservable } from "mobx";
 import MoviesService from "services/movie.service";
 
 class MoviesStore {
-	movies: IMovie | null = null;
+	movies: IMovies | null = null;
 	isLoading: boolean = false;
 	isAppliedFilters: boolean = false;
 
@@ -11,7 +11,7 @@ class MoviesStore {
 		makeAutoObservable(this);
 	}
 
-	setMovies = (obj: IMovie | null) => {
+	setMovies = (obj: IMovies | null) => {
 		this.movies = obj;
 	};
 

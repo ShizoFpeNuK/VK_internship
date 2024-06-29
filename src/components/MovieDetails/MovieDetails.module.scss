@@ -1,0 +1,70 @@
+.movieDetails {
+  .top {
+    display: flex;
+    column-gap: 50px;
+    margin-bottom: 12px;
+
+    .left {
+      flex: 0 0 320px;
+      width: 300px;
+
+      .poster {
+        display: block;
+        overflow: hidden;
+        max-height: 450px;
+        width: 100%;
+      }
+    }
+
+    .right {
+      flex: 1;
+      text-align: left;
+
+      .title {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+      }
+
+      .info {
+        .subtitle {
+          font-size: 22px;
+          font-weight: 600;
+          margin-bottom: 9px;
+        }
+
+        .row {
+          display: flex;
+          padding: 8px 0;
+          font-size: 13px;
+
+          .left {
+            flex: 0 0 160px;
+            width: 160px;
+            color: rgba(0, 0, 0, 0.6);
+          }
+
+          .right {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+
+  .bottom {
+    text-align: left;
+
+    .subtitle {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+  }
+}

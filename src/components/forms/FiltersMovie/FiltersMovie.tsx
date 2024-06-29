@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useStores } from "hooks/rootStoreContext";
-import { TypeInputRange, TypeMultipleSelect } from "components/types/formItems";
+import { TypeInputRange, TypeMultipleSelect } from "types/formItems";
 import {
 	CSSProperties,
 	FC,
@@ -11,9 +11,9 @@ import {
 	useState,
 } from "react";
 import styles from "./FiltersMovie.module.scss";
-import MultipleSelect from "components/formItems/Select/MultipleSelect";
+import MultipleSelect from "components/forms/formItems/Select/MultipleSelect";
 import PopupList from "components/popups/PopupList/PopupList";
-import InputRange from "components/formItems/InputRange/InputRange";
+import InputRange from "components/forms/formItems/InputRange/InputRange";
 import { hasEmptyValues } from "utils/helpers/checkFields";
 
 interface FiltersMovieProps {
