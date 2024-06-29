@@ -1,8 +1,8 @@
+import { spy } from "mobx";
 import { StrictMode } from "react";
 import "./index.scss";
 import App from "./App";
 import ReactDOM from "react-dom/client";
-import { spy } from "mobx";
 
 // !Просмотр actions
 spy((e) => {

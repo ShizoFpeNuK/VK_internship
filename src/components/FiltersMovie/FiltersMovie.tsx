@@ -1,48 +1,110 @@
 import { observer } from "mobx-react-lite";
-import { CSSProperties, FC, FormEventHandler, useState } from "react";
+import { useStores } from "hooks/rootStoreContext";
+import { TypeInputRange, TypeMultipleSelect } from "components/types/formItems";
+import {
+	CSSProperties,
+	FC,
+	FormEventHandler,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import styles from "./FiltersMovie.module.scss";
-import InputRange from "components/formItems/InputRange/InputRange";
+import MultipleSelect from "components/formItems/Select/MultipleSelect";
 import PopupList from "components/popups/PopupList/PopupList";
-import Select from "components/formItems/Select/Select";
+import InputRange from "components/formItems/InputRange/InputRange";
+import { hasEmptyValues } from "utils/helpers/checkFields";
 
 interface FiltersMovieProps {
+	countPerPage: number;
 	style?: CSSProperties;
 }
 
-const genres = ["Комедия", "Драма", "Экшен", "Фантастика"];
+type FormData = {
+	genres: string[];
+	year: { from: number | string; to: number | string };
+	rating: { from: number | string; to: number | string };
+};
 
-const FiltersMovie: FC<FiltersMovieProps> = observer(({ style }) => {
-	const [selected, setSelected] = useState<string[]>([]);
+const RATING = [0, 10];
+const YEAR = [1990, new Date().getFullYear()];
 
-	const handleSubmit: FormEventHandler<HTMLButtonElement> = (e) => {
-		e.preventDefault();
+const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) => {
+	const {
+		rootGenresStore: { genres, getGenres },
+		rootMoviesStore: { getMovies, setIsAppliedFilters },
+	} = useStores();
+	const [formData, setFormData] = useState<FormData>({
+		genres: [],
+		year: { from: YEAR[0], to: YEAR[1] },
+		rating: { from: RATING[0], to: RATING[1] },
+	});
+
+	const genreNames = useMemo(() => genres.map((genre) => genre.name), [genres]);
+
+	const handleChangeInputRange = useCallback((value: TypeInputRange) => {
+		setFormData((values) => ({ ...values, [value.name!]: value.range }));
+	}, []);
+
+	const handleSelect = (value: TypeMultipleSelect) => {
+		setFormData((values) => ({ ...values, [value.name!]: value.selected }));
 	};
+
+	const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+		e.preventDefault();
+		console.log(formData);
+
+		if (!hasEmptyValues(formData, ["genres"])) {
+			getMovies({
+				limit: countPerPage,
+				genres: formData.genres,
+				rating: { kp: `${formData.rating.from}-${formData.rating.to}` },
+				year: `${formData.year.from}-${formData.year.to}`,
+			});
+			setIsAppliedFilters(true);
+		}
+	};
+
+	useEffect(() => {
+		getGenres();
+	}, [getGenres]);
 
 	return (
 		<form
 			className={styles.filters}
 			style={style}
+			onSubmit={handleSubmit}
 		>
 			<PopupList title="Жанры">
-				<Select
-					selected={selected}
-					setSelected={setSelected}
-					genres={genres}
+				<MultipleSelect
+					name="genres"
+					selects={genreNames}
+					onSelected={handleSelect}
 				/>
 			</PopupList>
 			<PopupList title="Рейтинг">
 				<InputRange
-					min={0}
-					max={10}
+					name="rating"
+					min={RATING[0]}
+					max={RATING[1]}
+					onInputRange={handleChangeInputRange}
 				/>
 			</PopupList>
 			<PopupList title="Год выпуска">
 				<InputRange
-					min={1990}
-					max={new Date().getFullYear()}
+					name="year"
+					min={YEAR[0]}
+					max={YEAR[1]}
+					onInputRange={handleChangeInputRange}
 				/>
 			</PopupList>
-			<button onSubmit={handleSubmit}>Поиск</button>
+			<button
+				type="submit"
+				disabled={!genreNames.length ? true : false}
+			>
+				Поиск
+			</button>
 		</form>
 	);
 });

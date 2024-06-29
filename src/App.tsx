@@ -1,8 +1,8 @@
 import { FC } from "react";
-import styles from "./App.module.scss";
-import SearchMovies from "components/SearchMovies/SearchMovies";
 import { RootStoreContext } from "hooks/rootStoreContext";
+import styles from "./App.module.scss";
 import RootStore from "stores/RootStore";
+import SearchMovies from "components/SearchMovies/SearchMovies";
 
 const App: FC = () => {
 	return (

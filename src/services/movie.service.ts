@@ -1,29 +1,34 @@
+import { removeEmptyValues } from "utils/helpers/removeEmptyValues";
+import { IMovie, IMovieFilters } from "../models/movie.model";
 import kpAPI from "../utils/axios/axios.config";
-import { IMovie } from "../models/movie.model";
 
 class MoviesService {
-	private static pathBase = "/movie";
+	private static pathBase = "/v1.4/movie";
 
-	static async getAll(page: number, limit: number): Promise<IMovie> {
-		const params = new URLSearchParams();
-		params.append("selectFields", "id");
-		params.append("selectFields", "name");
-		params.append("selectFields", "enName");
-		params.append("selectFields", "alternativeName");
-		params.append("selectFields", "year");
-		params.append("selectFields", "rating");
-		params.append("selectFields", "poster");
-		params.append("type", "movie");
-		params.append("page", `${page}`);
-		params.append("limit", `${limit}`);
+	static async getAll(filters: IMovieFilters = {}): Promise<IMovie> {
+		const defaultFilters = {
+			"selectField": ["id", "name", "enName", "alternativeName", "year", "rating", "poster"],
+			"page": filters.page ?? 1,
+			"limit": filters.limit ?? 50,
+			"rating.kp": filters.rating?.kp,
+			"genres.name": [filters.genres?.map((genre) => genre)],
+			"year": filters.year,
+		};
 
-		// const movies = await kpAPI.get<IMovie>(`${this.pathBase}`, { params });
+		const params = removeEmptyValues(defaultFilters);
+
+		// const movies = await kpAPI.get<IMovie>(this.pathBase, { params });
+
+		// !Тест запросов
+		// const test = await kpAPI.get(this.pathBase, { params });
+
+		// console.log(test);
 
 		// !Для экономии запросов
 		const p = new Promise<{ data: IMovie }>((res) => {
 			const DATA_MOVIES: { data: IMovie } = {
 				data: {
-					docs: Array(limit).fill({
+					docs: Array(defaultFilters.limit).fill({
 						id: 1111,
 						name: "Code Geass",
 						alternativeName: null,
@@ -33,9 +38,9 @@ class MoviesService {
 						poster: null,
 					}),
 					total: 5000,
-					page,
-					pages: 5000 / limit,
-					limit,
+					page: defaultFilters.page!,
+					pages: 5000 / defaultFilters.limit!,
+					limit: defaultFilters.limit!,
 				},
 			};
 

@@ -15,3 +15,11 @@ export interface IMovie {
 	page: number;
 	pages: number;
 }
+
+export interface IMovieFilters {
+	page?: number;
+	limit?: number;
+	genres?: string[];
+	rating?: { kp: number | string };
+	year?: number | string;
+}

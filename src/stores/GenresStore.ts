@@ -14,7 +14,7 @@ class GenresStore {
 		this.genres = movies;
 	}
 
-	getGenres = async (page: number, limit: number) => {
+	getGenres = async () => {
 		try {
 			this.isLoading = true;
 			const res = await GenresService.getAll();

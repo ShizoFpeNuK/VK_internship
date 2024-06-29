@@ -1,8 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
+import qs from "qs";
 
 const axiosConfig: AxiosRequestConfig = {
-	// withCredentials: true,
-	baseURL: process.env.REACT_APP_SERVER_URL,
+	// baseURL: process.env.REACT_APP_SERVER_URL,
+	baseURL: "http://localhost",
+	paramsSerializer: (params) => qs.stringify(params, { encode: false, arrayFormat: "repeat" }),
 };
 
 const kpAPI = axios.create(axiosConfig);

@@ -5,25 +5,27 @@ import styles from "./ListCardMovie.module.scss";
 import CardMovie from "components/CardMovie/CardMovie";
 import Pagination from "components/Pagination/Pagination";
 
-const COUNT_PER_PAGE = 50;
-
-const getTotalPageCount = (countElements: number): number => {
-	return Math.ceil(countElements / COUNT_PER_PAGE);
+const getTotalPageCount = (countElements: number, count: number): number => {
+	return Math.ceil(countElements / count);
 };
 
-const ListCardMovie: FC = observer(() => {
+interface ListCardMovieProps {
+	countPerPage: number;
+}
+
+const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 	const {
-		rootMoviesStore: { movies, isLoading, getMovies },
+		rootMoviesStore: { movies, isLoading, isAppliedFilters, getMovies, setIsAppliedFilters },
 	} = useStores();
 	const [page, setPage] = useState(1);
 
 	const handleNextPageClick = useCallback(() => {
 		const current = page;
 		const next = current + 1;
-		const total = movies ? getTotalPageCount(movies.total) : current;
+		const total = movies ? getTotalPageCount(movies.total, countPerPage) : current;
 
 		setPage(next <= total ? next : current);
-	}, [page, movies]);
+	}, [page, movies, countPerPage]);
 
 	const handlePrevPageClick = useCallback(() => {
 		const current = page;
@@ -33,8 +35,15 @@ const ListCardMovie: FC = observer(() => {
 	}, [page]);
 
 	useEffect(() => {
-		getMovies(page, COUNT_PER_PAGE);
-	}, [page, getMovies]);
+		getMovies({ page, limit: countPerPage });
+	}, [page, getMovies, countPerPage]);
+
+	useEffect(() => {
+		if (isAppliedFilters) {
+			setPage(1);
+			setIsAppliedFilters(false);
+		}
+	}, [isAppliedFilters, setIsAppliedFilters]);
 
 	return (
 		<div className={styles.listCards}>
@@ -43,7 +52,7 @@ const ListCardMovie: FC = observer(() => {
 			) : movies?.docs ? (
 				movies.docs.map((movie, i) => (
 					<CardMovie
-						id={i + 1 + (page - 1) * COUNT_PER_PAGE}
+						id={i + 1 + (page - 1) * countPerPage}
 						key={movie.id}
 						year={movie.year}
 						poster={movie.poster?.url ?? "poster.avif"}
@@ -69,9 +78,9 @@ const ListCardMovie: FC = observer(() => {
 					onPrevPageClick={handlePrevPageClick}
 					disable={{
 						left: page === 1,
-						right: page === getTotalPageCount(movies.total),
+						right: page === getTotalPageCount(movies.total, countPerPage),
 					}}
-					nav={{ current: page, total: getTotalPageCount(movies.total) }}
+					nav={{ current: page, total: getTotalPageCount(movies.total, countPerPage) }}
 				/>
 			)}
 		</div>
