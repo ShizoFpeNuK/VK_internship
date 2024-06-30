@@ -27,6 +27,7 @@ const CardMovie: FC<CardMovieProps> = ({ numberInList, dataFav = "false", movie 
 				src={movie.poster?.url ?? "poster.jpg"}
 				alt={nameOk}
 				className={styles.poster}
+        loading="lazy"
 			/>
 
 			<div className={styles.container}>

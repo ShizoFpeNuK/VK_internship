@@ -106,7 +106,7 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 					)}
 				</div>
 
-				{!!movies && (
+				{!!movies && !isLoading && (
 					<Pagination
 						onNextPageClick={handleNextPageClick}
 						onPrevPageClick={handlePrevPageClick}

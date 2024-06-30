@@ -71,7 +71,7 @@ const ListCardFavMovies: FC<ListCardFavMoviesProps> = observer(
 					)}
 				</div>
 
-				{!!favMovies.length && (
+				{!!favMovies.length && !isLoading && (
 					<Pagination
 						onNextPageClick={handleNextPageClick}
 						onPrevPageClick={handlePrevPageClick}

@@ -1,13 +1,50 @@
-import { FC } from "react";
 import { IMovie } from "models/movie.model";
+import { observer } from "mobx-react-lite";
+import { useStores } from "hooks/rootStoreContext";
+import { FC, MouseEventHandler, useEffect, useRef, useState } from "react";
 import styles from "./MovieDetails.module.scss";
 
 interface MovieDetailsProps {
 	movie: IMovie;
 }
 
-const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
+const MovieDetails: FC<MovieDetailsProps> = observer(({ movie }) => {
 	const title = movie.name ?? movie.enName ?? movie.alternativeName ?? "Постер";
+
+	const {
+		rootFavMoviesStore: { favMoviesIds, addFavMovie, removeFavMovie },
+	} = useStores();
+	const refBtn = useRef<HTMLButtonElement>(null);
+	const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+	const handleClickFav: MouseEventHandler<HTMLButtonElement> = () => {
+		if (refBtn.current) {
+			const btnFav = refBtn.current;
+			btnFav.disabled = true;
+			const isAdding = favMoviesIds.every((favId) => favId !== movie.id.toString());
+
+			if (isAdding) {
+				btnFav.setAttribute("data-fav", "true");
+				addFavMovie(movie.id).then(() => (btnFav.disabled = false));
+				setIsFavorite(true);
+			} else {
+				btnFav.setAttribute("data-fav", "false");
+				removeFavMovie(movie.id).then(() => (btnFav.disabled = false));
+				setIsFavorite(false);
+			}
+		}
+	};
+
+	useEffect(() => {
+		if (refBtn.current && favMoviesIds.length) {
+			const isAdding = favMoviesIds.some((favId) => favId === movie.id.toString());
+
+			if (isAdding) {
+				refBtn.current.setAttribute("data-fav", "true");
+				setIsFavorite(true);
+			}
+		}
+	}, [favMoviesIds, movie]);
 
 	return (
 		<section className={styles.movieDetails}>
@@ -17,6 +54,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
 						className={styles.poster}
 						src={movie.poster?.url ?? "/poster.jpg"}
 						alt={title}
+						loading="lazy"
 					/>
 				</div>
 
@@ -47,6 +85,17 @@ const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
 							</div>
 						</div>
 					</div>
+
+					<div className={styles.actives}>
+						<button
+							ref={refBtn}
+							className={styles.btnFav}
+							onClick={handleClickFav}
+							data-fav="false"
+						>
+							{isFavorite ? "Избранное" : "В избранное"}
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -56,6 +105,6 @@ const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
 			</div>
 		</section>
 	);
-};
+});
 
 export default MovieDetails;
