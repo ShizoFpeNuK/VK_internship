@@ -11,6 +11,10 @@
   }
 
   .btnSubmit {
+    margin-top: 10px;
 
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 }

@@ -1,5 +1,6 @@
 @use "/src/utils/scss/variables" as val;
 
 .moviePage {
+  flex-grow: 1;
   padding: val.$padding_container;
 }

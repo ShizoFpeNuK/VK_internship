@@ -1,8 +1,10 @@
 @use "/src/utils/scss/variables" as var;
 
 .wrapper {
-  margin: var.$main_margin_padding;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   text-align: center;
   background-color: var(--white);
-  flex-grow: 1;
+  margin: var.$main_margin_padding;
 }

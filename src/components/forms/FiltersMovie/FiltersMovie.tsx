@@ -102,6 +102,7 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 						onInputRange={handleChangeInputRange}
 					/>
 				</PopupList>
+        
 				<button
 					className={styles.btnSubmit}
 					type="submit"

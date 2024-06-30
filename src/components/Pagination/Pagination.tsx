@@ -29,10 +29,11 @@ const Pagination: FC<PaginationProps> = ({
 	};
 
 	return (
-		<div className={styles.paginator}>
+		<div className={styles.pagination}>
 			<button
 				className={styles.arrow}
 				type="button"
+				title="Назад"
 				onClick={handlePrevPageClick}
 				disabled={disable.left}
 			>
@@ -46,6 +47,7 @@ const Pagination: FC<PaginationProps> = ({
 			<button
 				className={styles.arrow}
 				type="button"
+				title="Вперёд"
 				onClick={handleNextPageClick}
 				disabled={disable.right}
 			>

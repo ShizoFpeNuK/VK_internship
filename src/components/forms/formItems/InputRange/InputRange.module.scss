@@ -11,8 +11,8 @@
       margin: 0;
     }
 
-    /* Скрытие стрелок в Firefox */
     &[type="number"] {
+      appearance: none;
       -moz-appearance: textfield;
     }
   }

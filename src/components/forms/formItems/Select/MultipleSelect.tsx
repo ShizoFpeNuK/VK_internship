@@ -59,28 +59,30 @@ const MultipleSelect: FC<MultipleSelectProps> = ({ onSelected, selects, name = "
 	// }, [selected, isAllSelected]);
 
 	return (
-		<div
-			className={styles.select}
-			onClick={handleClickItem}
-		>
-			{/* <div
+		<div className={styles.dropdown}>
+			<div
+				className={styles.select}
+				onClick={handleClickItem}
+			>
+				{/* <div
 				className={styles.item}
 				data-id
 				data-all={selected.length === genres.length ? "true" : "false"}
-			>
+        >
 				Все жанры
-			</div> */}
-			{selects.map((select, i) => (
-				<div
-					className={styles.item}
-					data-choice="false"
-					// data-choice={isAllSelected ? "true" : "false"}
-					key={select}
-					data-key={select}
-				>
-					{select.charAt(0).toUpperCase() + select.slice(1)}
-				</div>
-			))}
+        </div> */}
+				{selects.map((select) => (
+					<div
+						className={styles.item}
+						data-choice="false"
+						// data-choice={isAllSelected ? "true" : "false"}
+						key={select}
+						data-key={select}
+					>
+						{select.charAt(0).toUpperCase() + select.slice(1)}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };

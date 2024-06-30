@@ -11,7 +11,10 @@ const MainPage: FC = () => {
 		<WrapperPage>
 			<section className={styles.mainPage}>
 				<FiltersMovie countPerPage={MOVIES_PER_PAGE} />
-				<ListCardMovie countPerPage={MOVIES_PER_PAGE} />
+				<ListCardMovie
+					countPerPage={MOVIES_PER_PAGE}
+					title="Все фильмы"
+				/>
 			</section>
 		</WrapperPage>
 	);

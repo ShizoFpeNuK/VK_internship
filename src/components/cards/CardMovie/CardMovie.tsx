@@ -8,13 +8,23 @@ interface CardMovieProps {
 	rating: number;
 	poster: string;
 	numberInList: number;
+	dataFav?: boolean;
 }
 
-const CardMovie: FC<CardMovieProps> = ({ numberInList, id, name, year, rating, poster }) => {
+const CardMovie: FC<CardMovieProps> = ({
+	numberInList,
+	id,
+	name,
+	year,
+	rating,
+	poster,
+	dataFav = "false",
+}) => {
 	return (
 		<div
 			className={styles.card}
 			data-key={id}
+			data-fav={dataFav}
 		>
 			<div className={styles.numberInList}>
 				<span>{numberInList}</span>
@@ -35,13 +45,13 @@ const CardMovie: FC<CardMovieProps> = ({ numberInList, id, name, year, rating, p
 
 				<div className={styles.actives}>
 					<button
-						className={styles.buttonInfo}
+						className={styles.btnInfo}
 						data-btn-details
 					>
 						Подробнее
 					</button>
 					<button
-						className={styles.buttonInfo}
+						className={styles.btnFav}
 						data-btn-fav
 					>
 						☆

@@ -1,10 +1,15 @@
 .details {
   display: block;
   text-align: left;
-  
+
+  &[open] {
+    summary {
+      margin-bottom: 8px;
+    }
+  }
+
   summary {
     cursor: pointer;
     font-weight: 600;
-    // margin-bottom: 5px;
   }
 }

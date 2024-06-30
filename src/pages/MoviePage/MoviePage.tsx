@@ -1,14 +1,13 @@
 import { IMovie } from "models/movie.model";
 import { FC, Suspense } from "react";
-import { Await, defer, useLoaderData } from "react-router-dom";
-import styles from "./MoviePage.module.scss"
+import { Await, Params, defer, useLoaderData } from "react-router-dom";
+import styles from "./MoviePage.module.scss";
 import WrapperPage from "components/wrappers/WrapperPage/WrapperPage";
 import MovieDetails from "components/MovieDetails/MovieDetails";
 import MoviesService from "services/movie.service";
 
-export const movieLoader = ({ params }: any) => {
-	const movie = MoviesService.getOne(params.movieId);
-	console.log(params);
+export const movieLoader = ({ params }: { params: Params<"movieId"> }) => {
+	const movie = MoviesService.getOne(params.movieId!);
 
 	return defer({ movie });
 };

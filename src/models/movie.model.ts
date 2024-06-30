@@ -1,4 +1,4 @@
-interface IMovieMain {
+export interface IMovieMain {
 	id: number;
 	name: string | null;
 	alternativeName: string | null;

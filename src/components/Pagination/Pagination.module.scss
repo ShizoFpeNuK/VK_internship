@@ -1,0 +1,31 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+
+  .arrow {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: transparent;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

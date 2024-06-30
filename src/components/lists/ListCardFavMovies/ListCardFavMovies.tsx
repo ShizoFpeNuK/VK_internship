@@ -1,31 +1,36 @@
 import { observer } from "mobx-react-lite";
 import { useStores } from "hooks/rootStoreContext";
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
-import styles from "./ListCardMovie.module.scss";
+import styles from "./ListCardFavMovies.module.scss";
 import CardMovie from "components/cards/CardMovie/CardMovie";
 import Pagination from "components/Pagination/Pagination";
 import { useNavigate } from "react-router-dom";
-import { IMovieMain, IMovies } from "models/movie.model";
+import { IMovieMain } from "models/movie.model";
 import { ROUTES } from "utils/routes/routes-page";
+import { runInAction } from "mobx";
 
 const getTotalPageCount = (countElements: number, count: number): number => {
 	return Math.ceil(countElements / count);
 };
 
-interface ListCardMovieProps {
+interface ListCardFavMoviesProps {
 	countPerPage?: number;
 	title?: string;
+	// movies: IMovieMain | null;
+	// isLoading?: boolean;
+	// onClickCardMovie?: (el: HTMLElement) => void;
+	// currentPage: number;
+	// onChangePage: (page: number) => void;
 }
 
-const ListCardMovie: FC<ListCardMovieProps> = observer(
+const ListCardFavMovies: FC<ListCardFavMoviesProps> = observer(
 	({ countPerPage = 50, title = "Список фильмов" }) => {
 		const {
-			rootMoviesStore: { movies, isLoading, isAppliedFilters, getMovies, setIsAppliedFilters },
-			rootFavMoviesStore: { favMoviesIds, addFavMovie, removeFavMovie },
+			rootFavMoviesStore: { favMovies, removeFavMovie },
 		} = useStores();
 		const [page, setPage] = useState(1);
 		const navigate = useNavigate();
-		const ref = useRef<HTMLDivElement | null>(null);
+		// const ref = useRef<HTMLDivElement | null>(null);
 
 		const handleClickCardMovie: MouseEventHandler<HTMLElement> = ({ target }) => {
 			const el = target as HTMLElement;
@@ -40,17 +45,7 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 				}
 
 				if (el.hasAttribute("data-btn-fav")) {
-					const btn = el as HTMLButtonElement;
-
-					if (parent.getAttribute("data-fav") === "true") {
-						btn.disabled = true;
-						parent.setAttribute("data-fav", "false");
-						removeFavMovie(movieId!).finally(() => (btn.disabled = false));
-					} else {
-						btn.disabled = true;
-						parent.setAttribute("data-fav", "true");
-						addFavMovie(movieId!).finally(() => (btn.disabled = false));
-					}
+					removeFavMovie(movieId!);
 				}
 			}
 		};
@@ -58,10 +53,10 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 		const handleNextPageClick = useCallback(() => {
 			const current = page;
 			const next = current + 1;
-			const total = movies ? getTotalPageCount(movies.total, countPerPage) : current;
+			const total = favMovies ? getTotalPageCount(favMovies.length, countPerPage) : current;
 
 			setPage(next <= total ? next : current);
-		}, [page, movies, countPerPage]);
+		}, [page, favMovies, countPerPage]);
 
 		const handlePrevPageClick = useCallback(() => {
 			const current = page;
@@ -70,45 +65,21 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 			setPage(prev > 0 ? prev : current);
 		}, [page]);
 
-		useEffect(() => {
-			getMovies({ page, limit: countPerPage });
-		}, [page, getMovies, countPerPage]);
-
-		useEffect(() => {
-			if (isAppliedFilters) {
-				setPage(1);
-				setIsAppliedFilters(false);
-			}
-		}, [isAppliedFilters, setIsAppliedFilters]);
-
-		useEffect(() => {
-			if (ref.current && movies?.docs && favMoviesIds.length) {
-				Array.from(ref.current.children).forEach((child) => {
-					const key = child.getAttribute("data-key");
-
-					favMoviesIds.forEach((favId) => {
-						if (key && favId === key) {
-							child.setAttribute("data-fav", "true");
-						}
-					});
-				});
-			}
-		}, [favMoviesIds, movies]);
-
 		return (
 			<section className={styles.listCards}>
 				<h1 className={styles.title}>{title}</h1>
 				<div
 					className={styles.container}
 					onClick={handleClickCardMovie}
-					ref={ref}
+					// ref={ref}
 				>
-					{isLoading ? (
+					{/* {isLoading ? (
 						<p>Loading...</p>
 					) : movies?.docs ? (
 						movies.docs.map((movie, i) => (
 							<CardMovie
-								numberInList={i + 1 + (page - 1) * countPerPage}
+								numberInList={i + 1 + (currentPage - 1) * countPerPage}
+								// numberInList={i + 1 + (page - 1) * countPerPage}
 								id={movie.id}
 								key={movie.id}
 								year={movie.year}
@@ -117,21 +88,34 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 								name={movie.name ?? movie.enName ?? movie.alternativeName ?? "Название отсутствует"}
 								// dataFav={favMoviesIds.includes(movie.id.toString())}
 							/>
+						)) */}
+					{!!favMovies.length ? (
+						favMovies.map((movie, i) => (
+							<CardMovie
+								numberInList={i + 1 + (page - 1) * countPerPage}
+								id={movie.id}
+								key={movie.id}
+								year={movie.year}
+								poster={movie.poster?.url ?? "poster.avif"}
+								rating={movie.rating.kp}
+								name={movie.name ?? movie.enName ?? movie.alternativeName ?? "Название отсутствует"}
+								dataFav={true}
+							/>
 						))
 					) : (
 						<p>NO DATA</p>
 					)}
 				</div>
 
-				{!!movies && (
+				{!!favMovies.length && (
 					<Pagination
 						onNextPageClick={handleNextPageClick}
 						onPrevPageClick={handlePrevPageClick}
 						disable={{
 							left: page === 1,
-							right: page === getTotalPageCount(movies.total, countPerPage),
+							right: page === getTotalPageCount(favMovies.length, countPerPage),
 						}}
-						nav={{ current: page, total: getTotalPageCount(movies.total, countPerPage) }}
+						nav={{ current: page, total: getTotalPageCount(favMovies.length, countPerPage) }}
 					/>
 				)}
 			</section>
@@ -139,4 +123,4 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 	},
 );
 
-export default ListCardMovie;
+export default ListCardFavMovies;
