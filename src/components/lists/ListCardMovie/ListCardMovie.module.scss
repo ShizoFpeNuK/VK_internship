@@ -1,7 +1,16 @@
 .listCards {
   width: 100%;
+  text-align: left;
+
+  .title {
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #222;
+  }
 
   .container {
+
     &:has(+ div) {
       margin-bottom: 10px;
     }

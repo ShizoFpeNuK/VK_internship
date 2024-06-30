@@ -1,10 +1,13 @@
+@use "colors";
+
 body {
   // color: var(--text-color);
   // background-color: var(--main-color);
   font-size: 20px;
   font-weight: 400;
   font-style: normal;
-  font-family: Roboto, sans-serif;
+  font-family: Arial, Verdana, Tahoma, sans-serif;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.2;
@@ -33,12 +36,22 @@ input,
 button {
   background: none;
   outline: none;
-  font-family: Montserrat, Roboto, sans-serif;
 }
 
 button {
   cursor: pointer;
-  border: solid 1px black;
+  font-size: 15px;
+  font-weight: 500;
+  border-width: 0;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  padding: 7px 12px;
+  transition: background-color 0.2s ease;
+  -webkit-transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e6e6e6;
+  }
 }
 
 input {

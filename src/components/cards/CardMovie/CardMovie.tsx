@@ -26,18 +26,28 @@ const CardMovie: FC<CardMovieProps> = ({ numberInList, id, name, year, rating, p
 				className={styles.poster}
 			/>
 
-			<div className={styles.info}>
-				<h3 className={styles.title}>{name}</h3>
-				<p className={styles.year}>{year}</p>
-				<p className={styles.rating}>{rating}</p>
-			</div>
+			<div className={styles.container}>
+				<div className={styles.info}>
+					<h3 className={styles.title}>{name}</h3>
+					<div className={styles.text}>{year}</div>
+					<div className={styles.text}>{rating === 0 ? "Недостаточно оценок" : `${rating} ★`}</div>
+				</div>
 
-			<button
-				className={styles.buttonInfo}
-				data-btn-details
-			>
-				Подробнее
-			</button>
+				<div className={styles.actives}>
+					<button
+						className={styles.buttonInfo}
+						data-btn-details
+					>
+						Подробнее
+					</button>
+					<button
+						className={styles.buttonInfo}
+						data-btn-fav
+					>
+						☆
+					</button>
+				</div>
+			</div>
 		</div>
 	);
 };

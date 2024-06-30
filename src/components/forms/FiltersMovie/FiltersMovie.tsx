@@ -71,41 +71,46 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 	}, [getGenres]);
 
 	return (
-		<form
-			className={styles.filters}
+		<aside
+			className={styles.container}
 			style={style}
-			onSubmit={handleSubmit}
 		>
-			<PopupList title="Жанры">
-				<MultipleSelect
-					name="genres"
-					selects={genreNames}
-					onSelected={handleSelect}
-				/>
-			</PopupList>
-			<PopupList title="Рейтинг">
-				<InputRange
-					name="rating"
-					min={RATING[0]}
-					max={RATING[1]}
-					onInputRange={handleChangeInputRange}
-				/>
-			</PopupList>
-			<PopupList title="Год выпуска">
-				<InputRange
-					name="year"
-					min={YEAR[0]}
-					max={YEAR[1]}
-					onInputRange={handleChangeInputRange}
-				/>
-			</PopupList>
-			<button
-				type="submit"
-				disabled={!genreNames.length ? true : false}
+			<form
+				className={styles.filters}
+				onSubmit={handleSubmit}
 			>
-				Поиск
-			</button>
-		</form>
+				<PopupList title="Жанры">
+					<MultipleSelect
+						name="genres"
+						selects={genreNames}
+						onSelected={handleSelect}
+					/>
+				</PopupList>
+				<PopupList title="Рейтинг">
+					<InputRange
+						name="rating"
+						min={RATING[0]}
+						max={RATING[1]}
+						onInputRange={handleChangeInputRange}
+					/>
+				</PopupList>
+				<PopupList title="Год выпуска">
+					<InputRange
+						name="year"
+						min={YEAR[0]}
+						max={YEAR[1]}
+						onInputRange={handleChangeInputRange}
+					/>
+				</PopupList>
+				<button
+					className={styles.btnSubmit}
+					type="submit"
+					disabled={!genreNames.length ? true : false}
+				>
+					Поиск
+				</button>
+			</form>
+		</aside>
 	);
 });
 

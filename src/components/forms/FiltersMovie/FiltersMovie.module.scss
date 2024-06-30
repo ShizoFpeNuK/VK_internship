@@ -1,7 +1,16 @@
-.filters {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  font-size: 14px;
-  padding: 5px;
+.container {
+  width: 30%;
+
+  .filters {
+    position: sticky;
+    top: 83px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    font-size: 14px;
+  }
+
+  .btnSubmit {
+
+  }
 }

@@ -1,0 +1,35 @@
+@use "/src/utils/scss/variables" as var;
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: var.$main_margin_padding;
+    background-color: var(--color-header);
+
+    .container {
+      display: flex;
+      column-gap: 10px;
+      justify-content: center;
+      padding: 20px 0;
+      font-size: 15px;
+      font-weight: 500;
+
+      a {
+        color: var(--color-link);
+        transition: color 0.1s ease-out;
+        -webkit-transition: color 0.1s ease-out;
+
+        &:hover {
+          color: var(--white);
+        }
+      }
+    }
+  }
+}

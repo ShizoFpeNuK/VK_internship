@@ -24,11 +24,8 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 	const onClickCardMovie: MouseEventHandler<HTMLElement> = ({ target }) => {
 		const element = target as HTMLElement;
 
-		if (
-			element.getAttribute("data-btn-details") &&
-			element.parentElement?.hasAttribute("data-key")
-		) {
-			const movieId = element.parentElement?.getAttribute("data-key");
+		if (element.getAttribute("data-btn-details")) {
+			const movieId = element.parentElement?.parentElement?.parentElement?.getAttribute("data-key");
 			navigate(`/movies/${movieId}`);
 		}
 	};
@@ -61,6 +58,7 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(({ countPerPage }) => {
 
 	return (
 		<section className={styles.listCards}>
+			<h1 className={styles.title}>Все фильмы</h1>
 			<div
 				className={styles.container}
 				onClick={onClickCardMovie}

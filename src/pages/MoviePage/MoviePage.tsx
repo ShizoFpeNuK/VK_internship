@@ -1,6 +1,8 @@
 import { IMovie } from "models/movie.model";
 import { FC, Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
+import styles from "./MoviePage.module.scss"
+import WrapperPage from "components/wrappers/WrapperPage/WrapperPage";
 import MovieDetails from "components/MovieDetails/MovieDetails";
 import MoviesService from "services/movie.service";
 
@@ -15,16 +17,18 @@ const MoviePage: FC = () => {
 	const { movie } = useLoaderData() as { movie: IMovie };
 
 	return (
-		<main>
-			<Suspense fallback={<p>Loading...</p>}>
-				<Await
-					resolve={movie}
-					errorElement={<p>Error loading movie!</p>}
-				>
-					{(movie) => <MovieDetails movie={movie} />}
-				</Await>
-			</Suspense>
-		</main>
+		<WrapperPage>
+			<section className={styles.moviePage}>
+				<Suspense fallback={<p>Loading...</p>}>
+					<Await
+						resolve={movie}
+						errorElement={<p>Error loading movie!</p>}
+					>
+						{(movie) => <MovieDetails movie={movie} />}
+					</Await>
+				</Suspense>
+			</section>
+		</WrapperPage>
 	);
 };
 

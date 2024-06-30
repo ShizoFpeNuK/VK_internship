@@ -1,12 +1,37 @@
 .card {
+  position: relative;
   display: flex;
   column-gap: 10px;
-  padding: 10px;
+  padding: 24px 20px;
   font-size: 14px;
-  border-bottom: solid 1px black;
+  width: 100%;
+  border-radius: 16px;
+  transition: background-color 0.15s ease-out;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+
+    &::before,
+    & + .card::before {
+      opacity: 0;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.08);
+    transition: opacity 0.15s ease-out;
   }
 
   .numberInList {
@@ -20,29 +45,47 @@
       font-weight: 600;
       font-size: 18px;
       line-height: 22px;
-    } 
+    }
   }
 
   .poster {
-    height: 100px;
-    width: 100px;
+    width: 72px;
+    min-width: 72px;
+    height: 108px;
+    box-shadow: 0 0 0 1px var(--color-shadow-img);
   }
 
-  .info {
+  .container {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
 
-    .title {
-      font-size: 16px;
-      font-weight: 700;
+    .info {
+      .title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        width: 100%;
+      }
+
+      .text {
+        width: 100%;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--color-subtext);
+      }
     }
 
-    .year {
-    }
+    .actives {
+      display: flex;
+      align-self: flex-start;
+      align-items: center;
+      column-gap: 5px;
 
-    .rating {
+      button[data-btn-fav] {
+        line-height: 1.1735;
+      }
     }
   }
 }
