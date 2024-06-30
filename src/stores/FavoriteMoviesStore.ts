@@ -6,6 +6,7 @@ import MoviesService from "services/movie.service";
 class FavoriteMoviesStore {
 	favMovies: IMovieMain[] = [];
 	favMoviesIds: string[] = [];
+	isLoading: boolean = false;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -27,24 +28,31 @@ class FavoriteMoviesStore {
 	}
 
 	addFavMovie = async (id: string | number) => {
-		// id = typeof id === "string" ? parseInt(id) : id;
-		// let isAdd = this.favMovies.every((movie) => movie.id !== id);
 		let isAdd = this.favMoviesIds.every((favId) => favId !== id.toString());
 
 		if (isAdd) {
-			const res = await MoviesService.getOneFav(id);
-			this.favMovies = [...this.favMovies, res];
-			this.favMoviesIds = [...this.favMoviesIds, res.id.toString()];
+			try {
+				this.isLoading = true;
+				const res = await MoviesService.getOneFav(id);
+
+				if (res) {
+					this.favMovies = [...this.favMovies, res];
+					this.favMoviesIds = [...this.favMoviesIds, res.id.toString()];
+				}
+			} finally {
+				this.isLoading = false;
+			}
 		}
 	};
 
 	removeFavMovie = async (id: string | number) => {
 		id = typeof id === "string" ? parseInt(id) : id;
+
 		this.favMovies = this.favMovies.filter((movie) => movie.id !== id);
 		this.favMoviesIds = this.favMoviesIds.filter((movieId) => movieId !== id.toString());
 	};
 
-	getFavMovies = async () => {
+	getFavMovies = () => {
 		const storageFavMovies = localStorage.getItem(itemsLocalStorage.FAV_MOVIES);
 		const storageFavMoviesIds = localStorage.getItem(itemsLocalStorage.IDS_FAV_MOVIES);
 

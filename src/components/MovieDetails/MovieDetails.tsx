@@ -15,7 +15,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
 				<div className={styles.left}>
 					<img
 						className={styles.poster}
-						src={movie.poster?.url ?? "/poster.avif"}
+						src={movie.poster?.url ?? "/poster.jpg"}
 						alt={title}
 					/>
 				</div>
@@ -52,7 +52,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ movie }) => {
 
 			<div className={styles.bottom}>
 				<h3 className={styles.subtitle}>Описание</h3>
-				<p className={styles.description}>{movie.description}</p>
+				<p className={styles.description}>{movie.description ?? "Отсутствует"}</p>
 			</div>
 		</section>
 	);

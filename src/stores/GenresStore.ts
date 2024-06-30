@@ -18,8 +18,10 @@ class GenresStore {
 		try {
 			this.isLoading = true;
 			const res = await GenresService.getAll();
-			this.genres = res;
-		} catch {
+
+			if (res) {
+				this.genres = res;
+			}
 		} finally {
 			this.isLoading = false;
 		}

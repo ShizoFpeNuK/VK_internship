@@ -1,6 +1,6 @@
+import { TypeInputRange } from "types/formItems";
 import { FC, FocusEventHandler, useEffect, useState } from "react";
 import styles from "./InputRange.module.scss";
-import { TypeInputRange } from "types/formItems";
 
 interface InputRangeProps {
 	min: number;

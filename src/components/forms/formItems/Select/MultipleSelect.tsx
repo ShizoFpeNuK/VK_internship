@@ -1,5 +1,5 @@
 import { TypeMultipleSelect } from "types/formItems";
-import { FC, MouseEventHandler, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import styles from "./MultipleSelect.module.scss";
 
 interface MultipleSelectProps {
@@ -8,44 +8,21 @@ interface MultipleSelectProps {
 	onSelected?: (value: TypeMultipleSelect) => void;
 }
 
-// const Select: FC<SelectProps> = ({ selected, onSelected, selects, name = "" }) => {
 const MultipleSelect: FC<MultipleSelectProps> = ({ onSelected, selects, name = "" }) => {
 	const [selected, setSelected] = useState<string[]>([]);
-	// const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
 
 	const handleClickItem: MouseEventHandler<HTMLDivElement> = ({ target }) => {
-		const element = target as HTMLElement;
+		const el = target as HTMLElement;
 
-		if (element.className === styles.item) {
-			// if (genres.length === selected.length) {
-			// 	setIsAllSelected(true);
-			// } else {
-			// 	setIsAllSelected(false);
-			// }
-
-			// if (element.hasAttribute("data-id")) {
-			// 	setIsAllSelected(false);
-
-			// 	if (genres.length === selected.length) {
-			// 		setIsAllSelected(false);
-			// 		// element.setAttribute("data-choice", "true");
-			// 		setSelected([]);
-			// 	} else {
-			// 		setIsAllSelected(true);
-			// 		setSelected(genres);
-			// 	}
-
-			// 	return;
-			// }
-
+		if (el.className === styles.item) {
 			let newSelected = [...selected];
 
-			if (selected.includes(element.getAttribute("data-key")!)) {
-				element.setAttribute("data-choice", "false");
-				newSelected = newSelected.filter((value) => value !== element.getAttribute("data-key"));
+			if (selected.includes(el.getAttribute("data-key")!)) {
+				el.setAttribute("data-choice", "false");
+				newSelected = newSelected.filter((value) => value !== el.getAttribute("data-key"));
 			} else {
-				element.setAttribute("data-choice", "true");
-				newSelected.push(element.getAttribute("data-key")!);
+				el.setAttribute("data-choice", "true");
+				newSelected.push(el.getAttribute("data-key")!);
 			}
 
 			setSelected(newSelected);
@@ -53,29 +30,16 @@ const MultipleSelect: FC<MultipleSelectProps> = ({ onSelected, selects, name = "
 		}
 	};
 
-	// useEffect(() => {
-	// 	console.log(selected);
-	// 	console.log(isAllSelected);
-	// }, [selected, isAllSelected]);
-
 	return (
 		<div className={styles.dropdown}>
 			<div
 				className={styles.select}
 				onClick={handleClickItem}
 			>
-				{/* <div
-				className={styles.item}
-				data-id
-				data-all={selected.length === genres.length ? "true" : "false"}
-        >
-				Все жанры
-        </div> */}
 				{selects.map((select) => (
 					<div
 						className={styles.item}
 						data-choice="false"
-						// data-choice={isAllSelected ? "true" : "false"}
 						key={select}
 						data-key={select}
 					>

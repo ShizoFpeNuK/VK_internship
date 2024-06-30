@@ -1,20 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useStores } from "hooks/rootStoreContext";
+import { hasEmptyValues } from "utils/helpers/checkFields";
 import { TypeInputRange, TypeMultipleSelect } from "types/formItems";
-import {
-	CSSProperties,
-	FC,
-	FormEventHandler,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
+import { CSSProperties, FC, FormEventHandler, useCallback, useMemo, useState } from "react";
 import styles from "./FiltersMovie.module.scss";
-import MultipleSelect from "components/forms/formItems/Select/MultipleSelect";
 import PopupList from "components/popups/PopupList/PopupList";
 import InputRange from "components/forms/formItems/InputRange/InputRange";
-import { hasEmptyValues } from "utils/helpers/checkFields";
+import MainLoader from "components/loaders/MainLoader/MainLoader";
+import MultipleSelect from "components/forms/formItems/Select/MultipleSelect";
 
 interface FiltersMovieProps {
 	countPerPage: number;
@@ -32,7 +25,7 @@ const YEAR = [1990, new Date().getFullYear()];
 
 const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) => {
 	const {
-		rootGenresStore: { genres, getGenres },
+		rootGenresStore: { genres, isLoading },
 		rootMoviesStore: { getMovies, setIsAppliedFilters },
 	} = useStores();
 	const [formData, setFormData] = useState<FormData>({
@@ -53,7 +46,6 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 
 	const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
-		console.log(formData);
 
 		if (!hasEmptyValues(formData, ["genres"])) {
 			getMovies({
@@ -66,10 +58,6 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 		}
 	};
 
-	useEffect(() => {
-		getGenres();
-	}, [getGenres]);
-
 	return (
 		<aside
 			className={styles.container}
@@ -80,11 +68,22 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 				onSubmit={handleSubmit}
 			>
 				<PopupList title="Жанры">
-					<MultipleSelect
-						name="genres"
-						selects={genreNames}
-						onSelected={handleSelect}
-					/>
+					{isLoading ? (
+						<div className={styles.loader}>
+							<MainLoader
+								width={30}
+								height={30}
+							/>
+						</div>
+					) : (
+						!!genreNames.length && (
+							<MultipleSelect
+								name="genres"
+								selects={genreNames}
+								onSelected={handleSelect}
+							/>
+						)
+					)}
 				</PopupList>
 				<PopupList title="Рейтинг">
 					<InputRange
@@ -102,7 +101,7 @@ const FiltersMovie: FC<FiltersMovieProps> = observer(({ style, countPerPage }) =
 						onInputRange={handleChangeInputRange}
 					/>
 				</PopupList>
-        
+
 				<button
 					className={styles.btnSubmit}
 					type="submit"

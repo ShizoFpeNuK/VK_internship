@@ -1,6 +1,7 @@
 @use "/src/utils/scss/variables" as val;
 
 .favoritesPage {
+  display: flex;
   flex-grow: 1;
   padding: val.$padding_container;
 }

@@ -1,6 +1,14 @@
 @use "/src/utils/scss/variables" as val;
 
 .moviePage {
+  display: flex;
   flex-grow: 1;
   padding: val.$padding_container;
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
 }

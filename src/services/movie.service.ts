@@ -15,7 +15,7 @@ const DATA = {
 class MoviesService {
 	private static pathBase = "/v1.4/movie";
 
-	static async getAll(filters: IMovieFilters = {}): Promise<IMovies> {
+	static async getAll(filters: IMovieFilters = {}): Promise<IMovies | null> {
 		const defaultFilters = {
 			"selectField": ["id", "name", "enName", "alternativeName", "year", "rating", "poster"],
 			"page": filters.page ?? 1,
@@ -26,30 +26,22 @@ class MoviesService {
 		};
 
 		const params = removeEmptyValues(defaultFilters);
-
-		// const movies = await kpAPI.get<IMovies>(this.pathBase, { params });
-
-		// !Тест запросов
-		// const test = await kpAPI.get(this.pathBase, { params });
-
-		// console.log(test);
+		// const movies = await kpAPI.get<IMovies | null>(this.pathBase, { params });
 
 		// !Для экономии запросов
-
 		const DATA_TEST: IMovieMain[] = [];
 
 		for (
-			let i = 0 + (defaultFilters.page - 1) * defaultFilters.limit;
+			let i = (defaultFilters.page - 1) * defaultFilters.limit;
 			i < defaultFilters.page * defaultFilters.limit;
 			i++
 		) {
 			DATA_TEST.push({ ...DATA, id: i });
 		}
 
-		const p = new Promise<{ data: IMovies }>((res) => {
-			const DATA_MOVIES: { data: IMovies } = {
+		const p = new Promise<{ data: IMovies | null }>((res) => {
+			const DATA_MOVIES: { data: IMovies | null } = {
 				data: {
-					// docs: Array(defaultFilters.limit).fill(DATA),
 					docs: DATA_TEST,
 					total: 5000,
 					page: defaultFilters.page!,
@@ -60,6 +52,7 @@ class MoviesService {
 
 			setTimeout(() => {
 				res(DATA_MOVIES);
+				// res({ data: null });
 			}, 1000);
 		});
 
@@ -68,12 +61,12 @@ class MoviesService {
 		return movies.data;
 	}
 
-	static async getOne(id: number | string): Promise<IMovie> {
-		// const movie = await kpAPI.get<any>(`${this.pathBase}/${id}`, {params: id});
+	static async getOne(id: number | string): Promise<IMovie | null> {
+		// const movie = await kpAPI.get<IMovie | null>(`${this.pathBase}/${id}`, {params: id});
 
 		// !Для экономии запросов
-		const p = new Promise<{ data: IMovie }>((res) => {
-			const DATA_MOVIE: { data: IMovie } = {
+		const p = new Promise<{ data: IMovie | null }>((res) => {
+			const DATA_MOVIE: { data: IMovie | null } = {
 				data: {
 					...DATA,
 					id: typeof id === "string" ? parseInt(id) : id,
@@ -96,12 +89,12 @@ class MoviesService {
 		return movie.data;
 	}
 
-	static async getOneFav(id: number | string): Promise<IMovieMain> {
-		// const movie = await kpAPI.get<any>(`${this.pathBase}/${id}`, {params: id});
+	static async getOneFav(id: number | string): Promise<IMovieMain | null> {
+		// const movie = await kpAPI.get<IMovieMain | null>(`${this.pathBase}/${id}`, {params: id});
 
 		// !Для экономии запросов
-		const p = new Promise<{ data: IMovieMain }>((res) => {
-			const DATA_MOVIE: { data: IMovieMain } = {
+		const p = new Promise<{ data: IMovieMain | null }>((res) => {
+			const DATA_MOVIE: { data: IMovieMain | null } = {
 				data: { ...DATA, id: typeof id === "string" ? parseInt(id) : id },
 			};
 

@@ -1,7 +1,7 @@
 import { FC } from "react";
-import styles from "./MainTemplate.module.scss";
-import { Link, Outlet } from "react-router-dom";
 import { ROUTES } from "utils/routes/routes-page";
+import { Link, Outlet } from "react-router-dom";
+import styles from "./MainTemplate.module.scss";
 
 const MainTemplate: FC = () => {
 	return (

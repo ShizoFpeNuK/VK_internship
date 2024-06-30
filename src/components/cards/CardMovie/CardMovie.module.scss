@@ -1,7 +1,7 @@
 .card {
   position: relative;
   display: flex;
-  column-gap: 10px;
+  column-gap: 15px;
   padding: 24px 20px;
   font-size: 14px;
   width: 100%;
@@ -64,8 +64,10 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     width: 100%;
-
+    
     .info {
+      text-align: left;
+      
       .title {
         font-size: 16px;
         font-weight: 700;
@@ -90,6 +92,10 @@
       .btnFav {
         line-height: 1.1735;
         color: var(--black);
+
+        &:disabled {
+          cursor: not-allowed;
+        }
       }
     }
   }

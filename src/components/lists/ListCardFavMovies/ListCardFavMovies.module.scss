@@ -1,6 +1,8 @@
 .listCards {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  width: 100%;
 
   .title {
     font-size: 32px;
@@ -11,10 +13,20 @@
   }
 
   .container {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
 
     &:has(+ div) {
       margin-bottom: 10px;
+    }
+
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
     }
   }
 }

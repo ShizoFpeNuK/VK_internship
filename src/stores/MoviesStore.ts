@@ -1,5 +1,5 @@
-import { IMovies, IMovieFilters } from "models/movie.model";
 import { makeAutoObservable } from "mobx";
+import { IMovies, IMovieFilters } from "models/movie.model";
 import MoviesService from "services/movie.service";
 
 class MoviesStore {
@@ -24,7 +24,6 @@ class MoviesStore {
 			this.isLoading = true;
 			const res = await MoviesService.getAll(filters);
 			this.movies = res;
-		} catch {
 		} finally {
 			this.isLoading = false;
 		}

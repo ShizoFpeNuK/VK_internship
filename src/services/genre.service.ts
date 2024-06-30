@@ -4,14 +4,14 @@ import kpAPI from "../utils/axios/axios.config";
 class GenresService {
 	private static pathBase = "/v1/movie/possible-values-by-field";
 
-	static async getAll(): Promise<IGenre[]> {
-		// const genres = await kpAPI.get<IGenre[]>(this.pathBase, {
+	static async getAll(): Promise<IGenre[] | null> {
+		// const genres = await kpAPI.get<IGenre[] | null>(this.pathBase, {
 		// 	params: { field: "genres.name" },
 		// });
 
 		// !Для экономии запросов
-		const p = new Promise<{ data: IGenre[] }>((res) => {
-			const DATA_GENRES: { data: IGenre[] } = {
+		const p = new Promise<{ data: IGenre[] | null }>((res) => {
+			const DATA_GENRES: { data: IGenre[] | null } = {
 				data: [
 					{ name: "аниме", slug: "" },
 					{ name: "биография", slug: "" },

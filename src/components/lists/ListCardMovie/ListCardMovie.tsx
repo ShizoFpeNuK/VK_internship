@@ -1,16 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useStores } from "hooks/rootStoreContext";
+import { getTotalPageCount } from "utils/helpers/getTotalPageCount";
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ListCardMovie.module.scss";
 import CardMovie from "components/cards/CardMovie/CardMovie";
 import Pagination from "components/Pagination/Pagination";
-import { useNavigate } from "react-router-dom";
-import { IMovieMain, IMovies } from "models/movie.model";
-import { ROUTES } from "utils/routes/routes-page";
-
-const getTotalPageCount = (countElements: number, count: number): number => {
-	return Math.ceil(countElements / count);
-};
+import MainLoader from "components/loaders/MainLoader/MainLoader";
 
 interface ListCardMovieProps {
 	countPerPage?: number;
@@ -24,33 +19,24 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 			rootFavMoviesStore: { favMoviesIds, addFavMovie, removeFavMovie },
 		} = useStores();
 		const [page, setPage] = useState(1);
-		const navigate = useNavigate();
 		const ref = useRef<HTMLDivElement | null>(null);
 
 		const handleClickCardMovie: MouseEventHandler<HTMLElement> = ({ target }) => {
 			const el = target as HTMLElement;
 
-			if (el.tagName === "BUTTON") {
+			if (el.hasAttribute("data-btn-fav")) {
 				const parent = el.parentElement!.parentElement!.parentElement!;
 				const movieId = parent.getAttribute("data-key");
 
-				if (el.hasAttribute("data-btn-details")) {
-					navigate(`${ROUTES.MOVIE}/${movieId}`);
-					return;
-				}
+				const btn = el as HTMLButtonElement;
+				btn.disabled = true;
 
-				if (el.hasAttribute("data-btn-fav")) {
-					const btn = el as HTMLButtonElement;
-
-					if (parent.getAttribute("data-fav") === "true") {
-						btn.disabled = true;
-						parent.setAttribute("data-fav", "false");
-						removeFavMovie(movieId!).finally(() => (btn.disabled = false));
-					} else {
-						btn.disabled = true;
-						parent.setAttribute("data-fav", "true");
-						addFavMovie(movieId!).finally(() => (btn.disabled = false));
-					}
+				if (el.tagName === "BUTTON" && parent.getAttribute("data-fav") === "true") {
+					parent.setAttribute("data-fav", "false");
+					removeFavMovie(movieId!).finally(() => (btn.disabled = false));
+				} else {
+					parent.setAttribute("data-fav", "true");
+					addFavMovie(movieId!).finally(() => (btn.disabled = false));
 				}
 			}
 		};
@@ -104,22 +90,19 @@ const ListCardMovie: FC<ListCardMovieProps> = observer(
 					ref={ref}
 				>
 					{isLoading ? (
-						<p>Loading...</p>
+						<div className={styles.loader}>
+							<MainLoader />
+						</div>
 					) : movies?.docs ? (
 						movies.docs.map((movie, i) => (
 							<CardMovie
 								numberInList={i + 1 + (page - 1) * countPerPage}
-								id={movie.id}
 								key={movie.id}
-								year={movie.year}
-								poster={movie.poster?.url ?? "poster.avif"}
-								rating={movie.rating.kp}
-								name={movie.name ?? movie.enName ?? movie.alternativeName ?? "Название отсутствует"}
-								// dataFav={favMoviesIds.includes(movie.id.toString())}
+								movie={movie}
 							/>
 						))
 					) : (
-						<p>NO DATA</p>
+						<p>По запросу ничего не найдено...</p>
 					)}
 				</div>
 

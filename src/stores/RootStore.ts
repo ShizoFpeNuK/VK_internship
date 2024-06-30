@@ -1,6 +1,6 @@
-import FavoriteMoviesStore from "./FavoriteMoviesStore";
 import GenresStore from "./GenresStore";
 import MoviesStore from "./MoviesStore";
+import FavoriteMoviesStore from "./FavoriteMoviesStore";
 
 class RootStore {
 	rootMoviesStore = new MoviesStore();
